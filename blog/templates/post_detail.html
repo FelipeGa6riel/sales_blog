@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ post.title }} — Blog</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<style>
+		:root{
+			--bg:#f7f7fb;
+			--card:#ffffff;
+			--muted:#6b7280;
+			--accent:#111827;
+			--radius:12px;
+			--max:900px;
+		}
+		*{box-sizing:border-box}
+		html,body{height:100%}
+		body{
+			margin:0;
+			font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+			background:var(--bg);
+			color:var(--accent);
+			-webkit-font-smoothing:antialiased;
+			-moz-osx-font-smoothing:grayscale;
+			padding:32px 16px;
+			display:flex;
+			justify-content:center;
+		}
+		.wrap{width:100%;max-width:var(--max)}
+		header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+		.brand{display:flex;gap:12px;align-items:center}
+		.logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;color:white;font-weight:600}
+		h1.site{font-size:1.05rem;margin:0}
+		p.lead{margin:0;color:var(--muted);font-size:0.95rem}
+
+		.card{background:var(--card);border-radius:var(--radius);box-shadow:0 8px 28px rgba(16,24,40,0.06);overflow:hidden}
+		.hero{width:100%;height:320px;object-fit:cover;background:#eef2ff;display:block}
+		@media(min-width:720px){
+			.hero{height:420px}
+		}
+		.container{padding:22px}
+		.meta{display:flex;gap:12px;align-items:center;margin-bottom:12px;color:var(--muted);font-size:0.95rem}
+		.title{margin:0 0 8px;font-size:1.4rem;font-weight:600}
+		.content{color:var(--accent);line-height:1.8;font-size:1rem;white-space:pre-wrap}
+		.actions{display:flex;gap:12px;margin-top:18px}
+		.btn{background:transparent;border:1px solid rgba(16,24,40,0.06);padding:8px 12px;border-radius:8px;color:var(--accent);text-decoration:none}
+		.muted-link{color:var(--muted);font-size:0.95rem;text-decoration:none}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<header>
+			<div class="brand">
+				<div class="logo">B</div>
+				<div>
+					<h1 class="site">Blog</h1>
+					<p class="lead">Escritos curtos e imagens minimalistas</p>
+				</div>
+			</div>
+			<div>
+				<a class="muted-link" href="{% url 'index' %}">&larr; Voltar</a>
+			</div>
+		</header>
+
+		<article class="card">
+			{% if post.image %}
+				<img class="hero" src="{{ post.image.url }}" alt="{{ post.title }}" width="1200" height="600" loading="lazy">
+			{% endif %}
+			<div class="container">
+				<h1 class="title">{{ post.title }}</h1>
+				<div class="meta">
+					<time datetime="{{ post.published_at|default:post.created_at }}">{{ post.published_at|date:"d \de \M Y"|default:post.created_at|date:"d \de \M Y" }}</time>
+					{% if post.link %}
+						&middot; <a class="muted-link" href="{{ post.link }}" target="_blank" rel="noopener">Fonte externa</a>
+					{% endif %}
+				</div>
+
+				<div class="content">
+					{{ post.content|linebreaks }}
+				</div>
+
+				<div class="actions">
+					<a class="btn" href="{% url 'index' %}">← Voltar</a>
+					{% if not post.is_published %}
+						<span class="muted-link">(Rascunho)</span>
+					{% endif %}
+				</div>
+			</div>
+		</article>
+	</div>
+</body>
+</html>

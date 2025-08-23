@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#f7f7fb;
+            --card:#ffffff;
+            --muted:#6b7280;
+            --accent:#111827;
+            --radius:12px;
+            --max:980px;
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0;
+            font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background:var(--bg);
+            color:var(--accent);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            padding:32px 16px;
+            display:flex;
+            justify-content:center;
+        }
+        .wrap{width:100%;max-width:var(--max)}
+        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+        .brand{display:flex;gap:12px;align-items:center}
+        .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;color:white;font-weight:600}
+        h1.site{font-size:1.1rem;margin:0}
+        p.lead{margin:0;color:var(--muted);font-size:0.95rem}
+
+        .grid{display:grid;gap:18px}
+        @media(min-width:720px){
+            .grid{grid-template-columns:1fr}
+        }
+
+        article.card{display:flex;flex-direction:column;background:var(--card);border-radius:var(--radius);box-shadow:0 6px 18px rgba(16,24,40,0.06);overflow:hidden}
+        .meta{display:flex;gap:12px;padding:18px}
+        .thumb{flex:0 0 160px;height:110px;object-fit:cover;border-radius:8px;background:#eef2ff}
+        .content{padding:8px 18px 18px}
+        .title{margin:0;font-size:1.05rem;font-weight:600}
+        .excerpt{margin:8px 0 0;color:var(--muted);line-height:1.5}
+
+        .empty{padding:36px;text-align:center;color:var(--muted);background:transparent;border-radius:10px}
+
+        a.post-link{color:inherit;text-decoration:none}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="brand">
+                <div class="logo">B</div>
+                <div>
+                    <h1 class="site">Blog</h1>
+                    <p class="lead">Escritos curtos e imagens minimalistas</p>
+                </div>
+            </div>
+        </header>
+
+        {% if posts %}
+        <main class="grid">
+            {% for post in posts %}
+            <article class="card">
+                <div class="meta">
+                    {% if post.image %}
+                        <img class="thumb" src="{{ post.image.url }}" alt="{{ post.title }}" width="160" height="110" loading="lazy">
+                    {% endif %}
+                    <div class="content">
+                        <a class="post-link" href="{% url 'post_detail' post.pk post.title %}">
+                            <h2 class="title">{{ post.title }}</h2>
+                        </a>
+                        <p class="excerpt">{{ post.content|truncatechars:160 }}</p>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </main>
+        {% else %}
+            <div class="empty">
+                <h2>Nenhum post encontrado</h2>
+                <p>Adicione alguns posts para ver aqui. :)</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
