@@ -6,77 +6,73 @@
     <title>Blog</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root{
-            --bg:#f7f7fb;
-            --card:#ffffff;
-            --muted:#6b7280;
-            --accent:#111827;
-            --radius:12px;
-            --max:980px;
-        }
-        *{box-sizing:border-box}
-        html,body{height:100%}
-        body{
-            margin:0;
-            font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            background:var(--bg);
-            color:var(--accent);
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-            padding:32px 16px;
-            display:flex;
-            justify-content:center;
-        }
-        .wrap{width:100%;max-width:var(--max)}
-        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-        .brand{display:flex;gap:12px;align-items:center}
-        .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;color:white;font-weight:600}
-        h1.site{font-size:1.1rem;margin:0}
-        p.lead{margin:0;color:var(--muted);font-size:0.95rem}
-
-        .grid{display:grid;gap:18px}
-        @media(min-width:720px){
-            .grid{grid-template-columns:1fr}
-        }
-
-        article.card{display:flex;flex-direction:column;background:var(--card);border-radius:var(--radius);box-shadow:0 6px 18px rgba(16,24,40,0.06);overflow:hidden}
-        .meta{display:flex;gap:12px;padding:18px}
-        .thumb{flex:0 0 160px;height:110px;object-fit:cover;border-radius:8px;background:#eef2ff}
-        .content{padding:8px 18px 18px}
-        .title{margin:0;font-size:1.05rem;font-weight:600}
-        .excerpt{margin:8px 0 0;color:var(--muted);line-height:1.5}
-
-        .empty{padding:36px;text-align:center;color:var(--muted);background:transparent;border-radius:10px}
-
-        a.post-link{color:inherit;text-decoration:none}
-    </style>
+    <!-- Tailwind CDN - quick prototype (production: compile Tailwind) -->
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        teal: '#06b6d4'
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="wrap">
-        <header>
-            <div class="brand">
-                <div class="logo">B</div>
-                <div>
-                    <h1 class="site">Blog</h1>
-                    <p class="lead">Escritos curtos e imagens minimalistas</p>
+    <div class="wrap max-w-5xl mx-auto">
+        <header class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-teal flex items-center justify-center text-white font-semibold text-lg shadow-md ring-1 ring-white/10" role="img" aria-label="Logo do blog">
+                    <!-- ícone minimalista estilo livro/nota -->
+                    <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 2v6h6" />
+                    </svg>
+                    <span class="sr-only">Blog</span>
                 </div>
+                <div>
+                    <h1 class="text-lg font-semibold tracking-tight text-slate-900">Blog</h1>
+                    <p class="text-sm text-slate-500">Escritos curtos e imagens minimalistas</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <label class="relative block">
+                    <span class="sr-only">Buscar posts</span>
+                    <input type="search" name="q" placeholder="Buscar posts..." class="w-52 max-w-xs pl-3 pr-8 py-2 bg-slate-50 border border-slate-100 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary" />
+                    <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1116.65 16.65z"></path></svg>
+                </label>
+
+                <a href="#" class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-100 rounded-lg text-sm text-slate-700 shadow-sm hover:bg-slate-50">Novo</a>
             </div>
         </header>
 
         {% if posts %}
-        <main class="grid">
+        <main class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {% for post in posts %}
-            <article class="card">
-                <div class="meta">
-                    {% if post.image %}
-                        <img class="thumb" src="{{ post.image.url }}" alt="{{ post.title }}" width="160" height="110" loading="lazy">
-                    {% endif %}
-                    <div class="content">
-                        <a class="post-link" href="{% url 'post_detail' post.pk post.title %}">
-                            <h2 class="title">{{ post.title }}</h2>
-                        </a>
-                        <p class="excerpt">{{ post.content|truncatechars:160 }}</p>
+            <article class="bg-white rounded-xl shadow-sm hover:shadow-md transform hover:-translate-y-1 transition p-0 overflow-hidden border border-slate-100">
+                {% if post.image %}
+                    <a href="{% url 'post_detail' post.pk post.title %}" class="block">
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy" class="w-full h-40 object-cover">
+                    </a>
+                {% else %}
+                    <div class="w-full h-40 bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center text-slate-400">sem imagem</div>
+                {% endif %}
+                <div class="p-4">
+                    <a href="{% url 'post_detail' post.pk post.title %}" class="block">
+                        <h2 class="text-base font-semibold text-slate-900">{{ post.title }}</h2>
+                    </a>
+                    <p class="mt-2 text-sm text-slate-500">{{ post.content|truncatechars:140 }}</p>
+                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 text-[0.75rem]">{{ post.author|slice:":1" }}</span>
+                            <span>Por: {{ post.author }}</span>
+                        </div>
+                        <time class="text-xs text-slate-400">{% if post.published_at %}{{ post.published_at|date:"d M Y" }}{% endif %}</time>
                     </div>
                 </div>
             </article>
