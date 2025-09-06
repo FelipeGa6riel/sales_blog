@@ -4,90 +4,63 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{ post.title }} — Blog</title>
+	<title>{{ post.title }} | Blog</title>
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-	<style>
-		:root{
-			--bg:#f7f7fb;
-			--card:#ffffff;
-			--muted:#6b7280;
-			--accent:#111827;
-			--radius:12px;
-			--max:900px;
-		}
-		*{box-sizing:border-box}
-		html,body{height:100%}
-		body{
-			margin:0;
-			font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-			background:var(--bg);
-			color:var(--accent);
-			-webkit-font-smoothing:antialiased;
-			-moz-osx-font-smoothing:grayscale;
-			padding:32px 16px;
-			display:flex;
-			justify-content:center;
-		}
-		.wrap{width:100%;max-width:var(--max)}
-		header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-		.brand{display:flex;gap:12px;align-items:center}
-		.logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;color:white;font-weight:600}
-		h1.site{font-size:1.05rem;margin:0}
-		p.lead{margin:0;color:var(--muted);font-size:0.95rem}
-
-		.card{background:var(--card);border-radius:var(--radius);box-shadow:0 8px 28px rgba(16,24,40,0.06);overflow:hidden}
-		.hero{width:100%;height:320px;object-fit:cover;background:#eef2ff;display:block}
-		@media(min-width:720px){
-			.hero{height:420px}
-		}
-		.container{padding:22px}
-		.meta{display:flex;gap:12px;align-items:center;margin-bottom:12px;color:var(--muted);font-size:0.95rem}
-		.title{margin:0 0 8px;font-size:1.4rem;font-weight:600}
-		.content{color:var(--accent);line-height:1.8;font-size:1rem;white-space:pre-wrap}
-		.actions{display:flex;gap:12px;margin-top:18px}
-		.btn{background:transparent;border:1px solid rgba(16,24,40,0.06);padding:8px 12px;border-radius:8px;color:var(--accent);text-decoration:none}
-		.muted-link{color:var(--muted);font-size:0.95rem;text-decoration:none}
-	</style>
+	<!-- Tailwind CDN - quick prototype (production: compile Tailwind) -->
+	<script>
+		window.tailwind = window.tailwind || {};
+		window.tailwind.config = {
+			theme: {
+				extend: {
+					colors: {
+						primary: '#6366f1',
+						teal: '#06b6d4'
+					}
+				}
+			}
+		};
+	</script>
+	<script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-	<div class="wrap">
-		<header>
-			<div class="brand">
-				<div class="logo">B</div>
+	<div class="wrap max-w-3xl mx-auto px-4">
+		<!-- Header igual ao index -->
+		<header class="flex items-center justify-between mb-10 pt-8">
+			<div class="flex items-center gap-4">
+				<div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-teal flex items-center justify-center text-white font-semibold text-lg shadow-md ring-1 ring-white/10" role="img" aria-label="Logo do blog">
+					<svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+						<path d="M14 2v6h6" />
+					</svg>
+					<span class="sr-only">Blog</span>
+				</div>
 				<div>
-					<h1 class="site">Blog</h1>
-					<p class="lead">Escritos curtos e imagens minimalistas</p>
+					<h1 class="text-lg font-semibold tracking-tight text-slate-900">Blog</h1>
+					<p class="text-sm text-slate-500">Escritos curtos e imagens minimalistas</p>
 				</div>
 			</div>
-			<div>
-				<a class="muted-link" href="{% url 'index' %}">&larr; Voltar</a>
-			</div>
+			<a href="/" class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-100 rounded-lg text-sm text-slate-700 shadow-sm hover:bg-slate-50">Voltar</a>
 		</header>
 
-		<article class="card">
+		<!-- Artigo -->
+		<article class="bg-white rounded-xl shadow p-6 md:p-10 border border-slate-100">
 			{% if post.image %}
-				<img class="hero" src="{{ post.image.url }}" alt="{{ post.title }}" width="1200" height="600" loading="lazy">
+				<img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-64 object-cover rounded-lg mb-6">
 			{% endif %}
-			<div class="container">
-				<h1 class="title">{{ post.title }}</h1>
-				<div class="meta">
-					<time datetime="{{ post.published_at|default:post.created_at }}">{{ post.published_at|date:"d \de \M Y"|default:post.created_at|date:"d \de \M Y" }}</time>
-					{% if post.link %}
-						&middot; <a class="muted-link" href="{{ post.link }}" target="_blank" rel="noopener">Fonte externa</a>
-					{% endif %}
-				</div>
-
-				<div class="content">
-					{{ post.content|linebreaks }}
-				</div>
-
-				<div class="actions">
-					<a class="btn" href="{% url 'index' %}">← Voltar</a>
-					{% if not post.is_published %}
-						<span class="muted-link">(Rascunho)</span>
-					{% endif %}
-				</div>
+			<h2 class="text-2xl md:text-3xl font-bold mb-2">{{ post.title }}</h2>
+			<div class="flex items-center gap-3 mb-6 text-sm text-slate-500">
+				<span class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 text-base font-semibold">
+					<img src="{{ post.author.avatar.url }}" alt="{{ post.author }}" class="w-full h-full object-cover rounded-full">
+				</span>
+				<span>Por {{ post.author }}</span>
+				{% if post.published_at %}
+				<span class="mx-2">•</span>
+				<time class="text-xs" datetime="{{ post.published_at|date:'Y-m-d' }}">{{ post.published_at|date:"d M Y" }}</time>
+				{% endif %}
+			</div>
+			<div class="prose prose-slate max-w-none text-base leading-relaxed">
+				{{ post.content|linebreaksbr }}
 			</div>
 		</article>
 	</div>
