@@ -17,6 +17,7 @@ class Profile(models.Model):
     def __str__(self) -> str:
         return self.user.get_username()
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,7 +25,7 @@ class Tag(models.Model):
     is_deleted = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    
+
     def __str__(self):
         return self.name
 
@@ -50,3 +51,6 @@ class Post(models.Model):
         from django.urls import reverse
 
         return reverse("post_detail", args=[str(self.id), self.title])
+
+    class Meta:
+        permissions = [("can_access_profile_admin", "Pode acessar o site do perfil")]
