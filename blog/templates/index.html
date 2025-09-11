@@ -24,31 +24,8 @@
 </head>
 <body>
     <div class="wrap max-w-5xl mx-auto">
-        <header class="flex items-center justify-between mb-8">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-teal flex items-center justify-center text-white font-semibold text-lg shadow-md ring-1 ring-white/10" role="img" aria-label="Logo do blog">
-                    <!-- ícone minimalista estilo livro/nota -->
-                    <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <path d="M14 2v6h6" />
-                    </svg>
-                    <span class="sr-only">Blog</span>
-                </div>
-                <div>
-                    <h1 class="text-lg font-semibold tracking-tight text-slate-900">Blog</h1>
-                    <p class="text-sm text-slate-500">Escritos curtos e imagens minimalistas</p>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-3">
-                <label class="relative block">
-                    <span class="sr-only">Buscar posts</span>
-                    <input type="search" name="q" placeholder="Buscar posts..." class="w-52 max-w-xs pl-3 pr-8 py-2 bg-slate-50 border border-slate-100 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary" />
-                    <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1116.65 16.65z"></path></svg>
-                </label>
-
-                <a href="#" class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-100 rounded-lg text-sm text-slate-700 shadow-sm hover:bg-slate-50">Novo</a>
-            </div>
+        <header>
+            {% include 'navbar.html' %}
         </header>
 
         {% if posts %}
