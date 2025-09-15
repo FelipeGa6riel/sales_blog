@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.urls import URLPattern, URLResolver, path
 from django.utils.html import format_html
 
-from blog.models import Post, Profile, Tag
+from blog.models import Post, Profile, Tag, Category
 from blog.views import ProfileAdminLogin
 
 # Register your models here.
@@ -50,6 +50,10 @@ class ProfileAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ("name", "is_active", "is_published", "created_at", "is_deleted")
 
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "is_active", "is_published", "created_at")
+
 
 class ProfileAdminSite(admin.AdminSite):
     site_header = "Profile Admin"
@@ -76,3 +80,4 @@ profile_admin_site = ProfileAdminSite(name="profile_admin")
 profile_admin_site.register(Profile, ProfileAdmin)
 profile_admin_site.register(Post, PostAdmin)
 profile_admin_site.register(Tag, TagAdmin)
+profile_admin_site.register(Category, CategoryAdmin)

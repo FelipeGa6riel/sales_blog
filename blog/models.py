@@ -1,8 +1,5 @@
-from django.conf import settings
 from django.db import models
-
-# Create your models here.
-
+from django.conf import settings
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
@@ -30,8 +27,21 @@ class Tag(models.Model):
         return self.name
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     title = models.CharField(max_length=200)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     content = models.TextField()
     link = models.URLField(blank=True, null=True)
@@ -49,7 +59,6 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         from django.urls import reverse
-
         return reverse("post_detail", args=[str(self.id), self.title])
 
     class Meta:
