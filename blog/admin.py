@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.contrib import admin
 from django.http import HttpRequest
 from django.urls import URLPattern, URLResolver, path
@@ -32,6 +34,20 @@ class PostAdmin(admin.ModelAdmin):
             qs = qs.filter(author__user=request.user)
 
         return qs
+
+    def get_form(self, request, obj=None, **kwargs):
+        post_form = super().get_form(request, obj, **kwargs)
+        if not request.user.is_superuser:
+            post_form.base_fields.pop("author", None)
+
+        return post_form
+
+    def save_model(self, request: HttpRequest, obj, form: Any, change: Any) -> None:
+        if not request.user.is_superuser:
+            profile = Profile.objects.get(user=request.user)
+            obj.author = profile
+
+        return super().save_model(request, obj, form, change)
 
 
 @admin.register(Profile)
