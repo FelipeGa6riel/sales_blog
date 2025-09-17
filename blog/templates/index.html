@@ -26,7 +26,10 @@
     <body class="bg-slate-50">
         <div class="min-h-screen flex">
             <!-- Toggle invisível para controlar a sidebar (precisa ser irmão da sidebar para o peer funcionar) -->
-            <input id="sidebar-toggle" type="checkbox" class="peer hidden" aria-hidden="true" />
+            <input id="sidebar-toggle"
+                   type="checkbox"
+                   class="peer hidden"
+                   aria-hidden="true" />
             <!-- Sidebar (mobile overlay + desktop fixa) -->
             <aside id="sidebar"
                    class="fixed inset-y-0 left-0 z-40 w-64 transform -translate-x-full peer-checked:translate-x-0 md:translate-x-0 md:static md:flex md:flex-col transition-transform duration-200 ease-out bg-white border-r border-slate-200 shadow md:shadow-none">
@@ -34,78 +37,80 @@
                     {% include "sidebar.html" %}
                 </div>
             </aside>
-
             <!-- Backdrop mobile -->
-            <label for="sidebar-toggle" class="peer-checked:opacity-100 peer-checked:pointer-events-auto opacity-0 pointer-events-none fixed inset-0 bg-slate-900/40 z-30 md:hidden transition"></label>
-
+            <label for="sidebar-toggle"
+                   class="peer-checked:opacity-100 peer-checked:pointer-events-auto opacity-0 pointer-events-none fixed inset-0 bg-slate-900/40 z-30 md:hidden transition">
+            </label>
             <!-- Conteúdo principal -->
             <div class="flex-1 flex flex-col min-w-0 relative z-10">
                 {% include "navbar.html" %}
                 <main class="flex-1 w-full">
                     <div class="wrap max-w-5xl mx-auto px-4 md:px-6 py-6">
-            {% if posts %}
-                <section class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {% for post in posts %}
-                        <article class="bg-white rounded-xl shadow-sm hover:shadow-md transform hover:-translate-y-1 transition p-0 overflow-hidden border border-slate-100">
-                            {% if post.image %}
-                                <a href="{% url 'post_detail' post.pk post.title %}" class="block">
-                             <img src="{{ post.image.url }}"
-                                 alt="{{ post.title }}"
-                                 loading="lazy"
-                                 width="640" height="256"
-                                 class="w-full h-40 object-cover" />
-                                </a>
-                            {% else %}
-                                <div class="w-full h-40 bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center text-slate-400">
-                                    sem imagem
-                                </div>
-                            {% endif %}
-                            <div class="p-4">
-                                <a href="{% url 'post_detail' post.pk post.title %}" class="block">
-                                    <h2 class="text-base font-semibold text-slate-900">{{ post.title }}</h2>
-                                </a>
-                                <p class="mt-2 text-sm text-slate-500">{{ post.content|truncatechars:140 }}</p>
-                                <div class="mt-3 flex flex-wrap gap-2">
-                                    {% if post.category %}
-                                        <span class="inline-flex items-center rounded-md bg-yellow-400/10 px-2 py-1 text-sm font-medium text-yellow-500 inset-ring inset-ring-yellow-400/20"><strong>{{ post.category.name }}</strong></span>
-                                    {% endif %}
-                                    {% if post.tags.all %}
-                                        <div class="mt-1 flex flex-wrap gap-2">
-                                            {% for tag in post.tags.all %}
-                                                <a class="inline-flex items-center px-2 py-1 bg-slate-200 text-slate-600 text-xs rounded-full"
-                                                   href='{% url 'index' %}?tag={{ tag.name }}'>{{ tag.name }}</a>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
-                                    <div class="flex items-center gap-2">
-                                        {% if post.author.avatar %}
-                                            <span class="w-7 h-7 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 text-[0.75rem]">
-                                       <img src="{{ post.author.avatar.url }}"
-                                           alt="{{ post.author }}"
-                                           width="28" height="28"
-                                           class="w-full h-full object-cover rounded-full" />
-                                            </span>
+                        {% if posts %}
+                            <section class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                {% for post in posts %}
+                                    <article class="bg-white rounded-xl shadow-sm hover:shadow-md transform hover:-translate-y-1 transition p-0 overflow-hidden border border-slate-100">
+                                        {% if post.image %}
+                                            <a href="{% url 'post_detail' post.pk post.title %}" class="block">
+                                                <img src="{{ post.image.url }}"
+                                                     alt="{{ post.title }}"
+                                                     loading="lazy"
+                                                     width="640"
+                                                     height="256"
+                                                     class="w-full h-40 object-cover" />
+                                            </a>
                                         {% else %}
-                                            ?
+                                            <div class="w-full h-40 bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center text-slate-400">
+                                                sem imagem
+                                            </div>
                                         {% endif %}
-                                        <span>Por: {{ post.author }}</span>
-                                    </div>
-                                    <time class="text-xs text-slate-400">
-                                        {% if post.published_at %}{{ post.published_at|date:"d M Y" }}{% endif %}
-                                    </time>
-                                </div>
+                                        <div class="p-4">
+                                            <a href="{% url 'post_detail' post.pk post.title %}" class="block">
+                                                <h2 class="text-base font-semibold text-slate-900">{{ post.title }}</h2>
+                                            </a>
+                                            <p class="mt-2 text-sm text-slate-500">{{ post.content|truncatechars:140 }}</p>
+                                            <div class="mt-3 flex flex-wrap gap-2">
+                                                {% if post.category %}
+                                                    <span class="inline-flex items-center rounded-md bg-{{ post.category.color }}-600/10 px-2 py-1 text-sm font-medium text-{{ post.category.color }}-500 inset-ring inset-ring-{{ post.category.color }}-400/30"><strong>{{ post.category.name }}</strong></span>
+                                                {% endif %}
+                                                {% if post.tags.all %}
+                                                    <div class="mt-1 flex flex-wrap gap-2">
+                                                        {% for tag in post.tags.all %}
+                                                            <a class="inline-flex items-center px-2 py-1 bg-slate-200 text-slate-600 text-xs rounded-full"
+                                                               href='{% url 'index' %}?tag={{ tag.name }}'>{{ tag.name }}</a>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+                                                <div class="flex items-center gap-2">
+                                                    {% if post.author.avatar %}
+                                                        <span class="w-7 h-7 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 text-[0.75rem]">
+                                                            <img src="{{ post.author.avatar.url }}"
+                                                                 alt="{{ post.author }}"
+                                                                 width="28"
+                                                                 height="28"
+                                                                 class="w-full h-full object-cover rounded-full" />
+                                                        </span>
+                                                    {% else %}
+                                                        ?
+                                                    {% endif %}
+                                                    <span>Por: {{ post.author }}</span>
+                                                </div>
+                                                <time class="text-xs text-slate-400">
+                                                    {% if post.published_at %}{{ post.published_at|date:"d M Y" }}{% endif %}
+                                                </time>
+                                            </div>
+                                        </div>
+                                    </article>
+                                {% endfor %}
+                            </section>
+                        {% else %}
+                            <div class="empty text-center py-14">
+                                <h2 class="text-lg font-semibold text-slate-700">Nenhum post encontrado</h2>
+                                <p class="text-sm text-slate-500">Adicione alguns posts para ver aqui. :)</p>
                             </div>
-                        </article>
-                    {% endfor %}
-                    </section>
-            {% else %}
-                <div class="empty text-center py-14">
-                    <h2 class="text-lg font-semibold text-slate-700">Nenhum post encontrado</h2>
-                    <p class="text-sm text-slate-500">Adicione alguns posts para ver aqui. :)</p>
-                </div>
-            {% endif %}
+                        {% endif %}
                     </div>
                 </main>
             </div>

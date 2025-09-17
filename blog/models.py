@@ -1,5 +1,17 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
+
+COLOR_CHOICES = {
+    "blue": "Azull",
+    "red": "Vermelho",
+    "yellow": "Amarelo",
+    "green": "Verde",
+    "purple": "Roxo",
+    "pink": "Rosa",
+    "indigo": "Indigo",
+    "gray": "Cinza",
+}
+
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
@@ -34,6 +46,9 @@ class Category(models.Model):
     is_deleted = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    color = models.CharField(
+        max_length=10, blank=True, null=True, choices=COLOR_CHOICES
+    )
 
     def __str__(self):
         return self.name
@@ -41,7 +56,9 @@ class Category(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, blank=True
+    )
     tags = models.ManyToManyField(Tag, blank=True)
     content = models.TextField()
     link = models.URLField(blank=True, null=True)
@@ -59,7 +76,9 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("post_detail", args=[str(self.id), self.title])
 
     class Meta:
         permissions = [("can_access_profile_admin", "Pode acessar o site do perfil")]
+        ordering = ["-published_at"]
