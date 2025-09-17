@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.http import HttpRequest, HttpResponse, HttpResponseBase
 from django.shortcuts import render
 
-from blog.models import Post
+from blog.models import Post, Category
 
 # Create your views here.
 
@@ -34,8 +34,9 @@ def index_posts(request):
         return render(request, "index.html", {"posts": posts})
 
     posts = Post.objects.all()
+    categories = Category.objects.all()
 
-    return render(request, "index.html", {"posts": posts})
+    return render(request, "index.html", {"posts": posts, "categories": categories})
 
 
 def post_detail(request, pk, title):
