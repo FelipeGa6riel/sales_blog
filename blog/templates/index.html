@@ -28,8 +28,8 @@
             <!-- Toggle invisível para controlar a sidebar (precisa ser irmão da sidebar para o peer funcionar) -->
             <input id="sidebar-toggle" type="checkbox" class="peer hidden" aria-hidden="true" />
             <!-- Sidebar (mobile overlay + desktop fixa) -->
-            <aside id="sidebar"
-                   class="fixed inset-y-0 left-0 z-40 w-64 transform -translate-x-full peer-checked:translate-x-0 md:translate-x-0 md:static md:flex md:flex-col transition-transform duration-200 ease-out bg-white border-r border-slate-200 shadow md:shadow-none">
+         <aside id="sidebar"
+             class="fixed inset-y-0 left-0 z-40 w-64 transform -translate-x-full peer-checked:translate-x-0 md:translate-x-0 md:fixed md:flex md:flex-col transition-transform duration-200 ease-out bg-white border-r border-slate-200 shadow md:shadow-none">
                 <div class="h-full overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-200">
                     {% include "sidebar.html" %}
                 </div>
@@ -39,7 +39,7 @@
             <label for="sidebar-toggle" class="peer-checked:opacity-100 peer-checked:pointer-events-auto opacity-0 pointer-events-none fixed inset-0 bg-slate-900/40 z-30 md:hidden transition"></label>
 
             <!-- Conteúdo principal -->
-            <div class="flex-1 flex flex-col min-w-0 relative z-10">
+            <div class="flex-1 flex flex-col min-w-0 relative z-10 md:ml-64">
                 {% include "navbar.html" %}
                 <main class="flex-1 w-full">
                     <div class="wrap max-w-5xl mx-auto px-4 md:px-6 py-6">
@@ -109,6 +109,8 @@
                     </div>
                 </main>
             </div>
+            
         </div>
+        
     </body>
 </html>
