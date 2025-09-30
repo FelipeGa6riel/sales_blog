@@ -67,7 +67,7 @@
                                 <p class="mt-2 text-sm text-slate-500">{{ post.content|truncatechars:140 }}</p>
                                 <div class="mt-3 flex flex-wrap gap-2">
                                     {% if post.category %}
-                                        <span class="inline-flex items-center rounded-md bg-yellow-400/10 px-2 py-1 text-sm font-medium text-yellow-500 inset-ring inset-ring-yellow-400/20"><strong>{{ post.category.name }}</strong></span>
+                                        <span class="inline-flex items-center rounded-md bg-[{{post.category.color}}]/10 px-2 py-1 text-sm font-medium text-[{{post.category.color}}] ring-1 ring-[{{post.category.color}}]/20 ring-inset"><strong>{{ post.category.name }}</strong></span>
                                     {% endif %}
                                     {% if post.tags.all %}
                                         <div class="mt-1 flex flex-wrap gap-2">
@@ -111,6 +111,9 @@
             </div>
             
         </div>
-        
+        <div>
+            includer footer
+            {% include "footer.html" %}
+        </div>
     </body>
 </html>

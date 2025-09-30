@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from colorfield.fields import ColorField
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
@@ -34,6 +35,7 @@ class Category(models.Model):
     is_deleted = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    color = ColorField(default="#FF0000")
 
     def __str__(self):
         return self.name
